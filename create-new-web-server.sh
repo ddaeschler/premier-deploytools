@@ -2,7 +2,7 @@
 
 # usage: create-new-web-server.sh server_name [wine_volume_name]
 
-if [ $# -lt 2 ]
+if [ $# -lt 1 ]
 then
     echo "usage: create-new-web-server.sh server_name [wine_volume_name] "
     exit
@@ -12,7 +12,7 @@ server_name=$1
 wine_volume_name=""
 wine_volume_size=""
 
-if [ $# -gt 2 ]
+if [ $# -gt 1 ]
 then
     wine_volume_name=$2
     wine_volume_size="75"
