@@ -21,11 +21,11 @@ def _print_server_info(server):
     print "Admin password: ", server.adminPass
 
     if pubIp:
-        print "Public IP: ", server.networks.public[0]
+        print "Public IP: ", pubIp
 
     if privIp:
-        print "Private IP: ", server.networks.private[0]
-        
+        print "Private IP: ", privIp
+
 
 def main(argv):
     argLen = len(argv)
