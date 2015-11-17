@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import sys
 
 #usage: generate-lsync-config.py ipaddress
 
