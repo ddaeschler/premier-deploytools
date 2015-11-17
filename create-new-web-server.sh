@@ -18,7 +18,32 @@ then
     wine_volume_size="75"
 fi
 
-#create the server
-python create-server.py ${server_name} "general1-2" "2GB-cluster-clone-image" ${wine_volume_name} ${wine_volume_size}
+#create the server and read the IP address information
+privip=""
+regex="Private IP:\s*(.*)"
+while IFS= read -r line
+do
+    [[ $line =~ $regex ]]
+    if [ ! -z "${BASH_REMATCH[1]}" ]
+        then
+        privip="${BASH_REMATCH[1]}"
+    fi
 
-#retrieve the IP address
+    echo $line
+
+done < <(python create-server.py ${server_name} "general1-2" "2GB-cluster-clone-image" ${wine_volume_name} ${wine_volume_size})
+
+if [ -z $privip ]
+    then
+    echo "Unable to obtain a private IP address from the new server. Cannot continue"
+    exit 1
+fi
+
+#we have the ip address. send the remote commands to format and mount the volume
+ssh root@${privip} < format-and-mount-volume.sh
+
+#add the lsync configuration to our local configs
+python generate-lsync-config.py ${privip} >> /etc/lsyncd.conf
+
+#restart lsyncd
+service lsyncd restart

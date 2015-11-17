@@ -4,11 +4,28 @@ import common
 import sys
 
 def _print_server_info(server):
+    pubIp = None
+    privIp = None
+
+    #look for v4 addresses
+    for ip in server.networks['public']:
+        if "." in ip:
+            pubIp = ip
+
+    for ip in server.networks['private']:
+        if "." in ip:
+            privIp = ip
+
     print "ID: ", server.id
     print "Status: ", server.status
     print "Admin password: ", server.adminPass
-    print "Public IP: ", server.networks.public[0]
-    print "Private IP: ", server.networks.private[0]
+
+    if pubIp:
+        print "Public IP: ", server.networks.public[0]
+
+    if privIp:
+        print "Private IP: ", server.networks.private[0]
+        
 
 def main(argv):
     argLen = len(argv)
