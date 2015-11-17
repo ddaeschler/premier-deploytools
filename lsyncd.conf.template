@@ -1,0 +1,40 @@
+-- SERVER $ipaddress --
+
+-- VHOSTS
+sync {
+    default.rsync,
+    source="/var/vhosts/",
+    target="$ipaddress:/var/vhosts/",
+    excludeFrom="/etc/lsyncd.exclude",
+    rsync = {
+        compress = true,
+        acls = true,
+        verbose = true,
+        rsh = "/usr/bin/ssh -p 22 -o StrictHostKeyChecking=no" }
+}
+
+-- NGINX
+sync {
+    default.rsync,
+    source="/etc/nginx/",
+    target="$ipaddress:/etc/nginx/",
+    rsync = {
+        compress = true,
+        acls = true,
+        verbose = true,
+        rsh = "/usr/bin/ssh -p 22 -o StrictHostKeyChecking=no" }
+}
+
+--PHP
+sync {
+    default.rsync,
+    source="/etc/php.d/",
+    target="$ipaddress:/etc/php.d/",
+    rsync = {
+        compress = true,
+        acls = true,
+        verbose = true,
+        rsh = "/usr/bin/ssh -p 22 -o StrictHostKeyChecking=no" }
+}
+
+-- END SERVER $ipaddress --

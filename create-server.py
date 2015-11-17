@@ -4,16 +4,18 @@ import common
 import sys
 
 def _print_server_info(server):
-    print "ID:", server.id
-    print "Status:", server.status
-    print "Admin password:", server.adminPass
+    print "ID: ", server.id
+    print "Status: ", server.status
+    print "Admin password: ", server.adminPass
+    print "Public IP: ", server.networks.public[0]
+    print "Private IP: ", server.networks.private[0]
 
 def main(argv):
     argLen = len(argv)
 
     if (argLen < 3):
         print "Usage: create-server.py NAME FLAVOR_ID IMAGE_NAME [ADDNL_VOLUME_NAME] [ADDNL_VOLUME_SIZE]"
-        return
+        return 1
 
     name = argv[0]
     flavorId = argv[1]
@@ -37,15 +39,15 @@ def main(argv):
 
     if not foundImage:
         print "Could not locate image " + imageName
-        return 1
+        return 2
 
     if not name:
         print "Server name cannot be blank"
-        return 2
+        return 3
 
     server = cs.servers.create(name, foundImage.id, flavorId)
-    _print_server_info(server)
-    pyrax.utils.wait_for_build(server)
+    fullServer = pyrax.utils.wait_for_build(server)
+    _print_server_info(fullServer)
 
     if addnlVolumeName:
         cbs = pyrax.cloud_blockstorage
