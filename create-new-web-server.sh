@@ -39,6 +39,9 @@ if [ -z $privip ]
     exit 1
 fi
 
+#wait for the server to settle "installing software"
+sleep 2m
+
 #we have the ip address. send the remote commands to format and mount the volume
 ssh root@${privip} < format-and-mount-volume.sh
 
