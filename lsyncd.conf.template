@@ -9,6 +9,9 @@ sync {
     rsync = {
         compress = true,
         acls = true,
+        perms = true,
+        owner = true,
+        group = true,
         verbose = true,
         rsh = "/usr/bin/ssh -p 22 -o StrictHostKeyChecking=no" }
 }
